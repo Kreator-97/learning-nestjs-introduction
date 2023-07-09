@@ -8,28 +8,12 @@ import { v4 as uuid} from 'uuid'
 @Injectable()
 export class BrandsService {
 
-  private brands: Brand[] = [
-    {
-      id: uuid(),
-      name: 'Toyota',
-      createAt: Date.now()
-    },
-    {
-      id: uuid(),
-      name: 'Nissan',
-      createAt: Date.now()
-    },
-    {
-      id: uuid(),
-      name: 'Tesla',
-      createAt: Date.now()
-    },
-  ]
+  private brands: Brand[] = []
 
   create(createBrandDto: CreateBrandDto) {
     const brand: Brand = {
       id: uuid(),
-      name: createBrandDto.name,
+      name: createBrandDto.name.toLocaleLowerCase(),
       createAt: Date.now()
     }
 
@@ -56,7 +40,7 @@ export class BrandsService {
     brand.updatedAt = Date.now()
     brand.name = name
 
-    return brand
+    return { ...brand }
   }
 
   remove(id: string) {
@@ -64,5 +48,9 @@ export class BrandsService {
 
     this.brands = this.brands.filter( brand => brand.id !== id )
     return deleted
+  }
+
+  fillBrandsWithSeedData(brands: Brand[]) {
+    this.brands = brands
   }
 }
